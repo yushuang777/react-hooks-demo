@@ -4,29 +4,31 @@ import { makeObservable, observable, action, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
 class Store {
-  @observable
   count = 0;
 
   constructor() {
-    makeObservable(this);
+    makeObservable(this, {
+      count: observable,
+      double: computed,
+      increment: action,
+      decrement: action,
+    });
   }
 
-  @computed
   get double() {
     return this.count * 2;
   }
-  @action
+
   increment() {
     this.count++;
   }
-  @action
+
   decrement() {
     this.count--;
   }
 }
 
-@observer
-export default class App extends React.Component {
+class App extends React.Component {
   constructor() {
     super();
     this.store = new Store();
@@ -44,3 +46,5 @@ export default class App extends React.Component {
     );
   }
 }
+
+export default observer(App);
